@@ -1,0 +1,65 @@
+#
+#   project-specific c related content
+#
+File?-*
+Makefile
+test_mirsa
+test_coding
+test_crypt
+stress_coding
+mirsa_genkeys
+mirsa_rw
+mirsa
+use_getopt
+#
+#   application-specific RSA public and private key files
+*.pub
+*.pvt
+#
+#   gcc compiled headers should not exist
+*.gch
+#
+#   writeup document and latex related content
+*.out
+*.aux
+*.log
+*.pdf
+#
+#   image related content
+*.png
+*.jpg
+#
+#   compression related content
+._*
+*.gz
+*.tar
+*.zip
+#
+#   python related content
+__pycache__
+#
+#   generic exclusions from github gitignore
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.a
+*.pyc
+*.s
+*.i
+*.7z
+*.dmg
+*.iso
+*.jar
+*.rar
+#
+#   macos related excludes
+.DS_Store*
+*.dSYM
+#
+#   doxygen related excludes
+Doc/*
+DocAll/*
+
