@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include <time.h>
+#include <unistd.h>
 #include "mirsa_lib.h"
 
 void usage() {
@@ -14,6 +16,7 @@ void usage() {
 int main( int argc, char * argv[] ) {
 	int opt;
 	char *name;
+	name = NULL;
 	int seed = 0;
 	int fall = 0;
 	while ( (opt = getopt( argc, argv, "hvs:lk:x") ) != -1 ) {
@@ -60,8 +63,55 @@ int main( int argc, char * argv[] ) {
 	}
 	
 	// choose primes and generate keys	
+	FILE *fp;
+        fp = fopen( "Primes.txt", "r" );
+
+        // check to be sure the open succeeded
+        if( fp == NULL ) {
+                // something went wrong - report it, and exit
+                perror( "Primes.txt" );
+                exit( EXIT_FAILURE );
+	}
+
+	int num_primes = 0;	
+	fscanf(fp, "%d", &num_primes);
+	unsigned long int *primes = malloc(sizeof(unsigned long int) * num_primes);	
 	
-	unsigned long int p = 0, q = 0;
-	mr_make_keys(p, q, "uwu");
+	int i = 0;
+	while( fscanf(fp, "%lu", &primes[i]) && i < num_primes ) {
+		i++;
+	}
+	
+	
+	if( seed == 0 ) {
+		seed = (unsigned) time(0);
+	}
+	srand((unsigned) seed);
+
+	unsigned long int p = 0, q = 0, res = 0;
+	int j = 0;
+	bool success = 0;
+	while( j < 3 ) {
+		p = primes[rand() % num_primes];
+		q = primes[rand() % num_primes];
+		if(  __builtin_umull_overflow(p, q, &res) ) {
+			j++;
+		} else {
+			success = 1;
+			break;
+		}
+	}
+	free(primes);
+
+	if( !success ) {
+		fprintf( stderr, "error: mr_make_keys: failed to generate keyset.\n" );
+		exit( EXIT_FAILURE );
+	}
+	
+	if( name == NULL ) {
+		name = getlogin();
+	}
+	mr_make_keys(p, q, name);
+	
 
 }
