@@ -63,6 +63,7 @@ int main( int argc, char * argv[] ) {
 					if( name != NULL ) {
 						break;
 					}
+					fprintf( stderr, "error: missing key file name.\n" ); 
 				}
 				/* fall through */
 			case '?':
@@ -85,9 +86,8 @@ int main( int argc, char * argv[] ) {
 
         // check to be sure the open succeeded
         if( fp == NULL ) {
-                // something went wrong - report it, and exit
-                perror( "Primes.txt" );
-                exit( EXIT_FAILURE );
+               	fprintf( stderr, "error: missing primes file.\n" );
+		exit( EXIT_FAILURE );
 	}
 
 	int num_primes = 0;	
@@ -99,7 +99,10 @@ int main( int argc, char * argv[] ) {
 		i++;
 	}
 	fclose( fp );	
-	
+	if( i < num_primes ) {
+		fprintf( stderr, "error: primes file has invalid count.\n" );
+	}
+
 	if( seed == 0 ) {
 		seed = (unsigned) time(0);
 	}
@@ -122,6 +125,7 @@ int main( int argc, char * argv[] ) {
 
 	if( !success ) {
 		fprintf( stderr, "error: mr_make_keys: failed to generate keyset.\n" );
+		fprintf( stderr, "error: mr_make_keys: overflow. no keyset for <%lu, %lu>.\n", p, q );
 		exit( EXIT_FAILURE );
 	}
 	
@@ -130,8 +134,8 @@ int main( int argc, char * argv[] ) {
 	}
 
 	mr_make_keys(p, q, name);
-
-	mr_read_keyfile("j.pvt");
-	mr_read_keyfile("j.pub");
+	
+	mr_read_keyfile("jb4411.pvt");
+	mr_read_keyfile("jb4411.pub");
 	exit( EXIT_SUCCESS );	
 }

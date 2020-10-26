@@ -73,6 +73,7 @@ bool mr_make_keys( uint64_t p, uint64_t q, const char * user ) {
 	}
 
 	if( !done ) {
+		fprintf( stderr, "error: mr_make_keys: failed to generate keyset.\n" );
 		fprintf( stderr, "error: mr_make_keys: no keyset for <%lu, %lu>.\n", p, q );
 		exit( EXIT_FAILURE );
 	}
