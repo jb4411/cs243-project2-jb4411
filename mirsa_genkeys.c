@@ -13,7 +13,7 @@
 /// Used when the program has incomplete command line input.
 
 void usage() {
-	fprintf( stderr, "usage: mirsa_genkeys [-hv] [-k key] [-s seed]\n" );
+	fprintf( stderr, "\nusage: mirsa_genkeys [-hv] [-k key] [-s seed]\n" );
 }
 
 /// The main program takes command line input, processes argument flags, picks
@@ -135,7 +135,5 @@ int main( int argc, char * argv[] ) {
 
 	mr_make_keys(p, q, name);
 	
-	mr_read_keyfile("jb4411.pvt");
-	mr_read_keyfile("jb4411.pub");
 	exit( EXIT_SUCCESS );	
 }
