@@ -43,7 +43,7 @@ int main( int argc, char * argv[] ) {
 				exit( EXIT_SUCCESS );
 				break;
 			case 'v':
-				//mr_verbose();
+				mr_verbose(1);
 				break;
 			case 's':
 				seed = (int) strtol( optarg, NULL, 10 );
@@ -130,5 +130,8 @@ int main( int argc, char * argv[] ) {
 	}
 
 	mr_make_keys(p, q, name);
+
+	mr_read_keyfile("j.pvt");
+	mr_read_keyfile("j.pub");
 	exit( EXIT_SUCCESS );	
 }
