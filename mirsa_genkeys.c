@@ -13,7 +13,8 @@
 /// Used when the program has incomplete command line input.
 
 void usage() {
-	fprintf( stderr, "\nusage: mirsa_genkeys [-hv] [-k key] [-s seed]\n" );
+	fprintf( stderr, "\n" );
+	fprintf( stderr, "usage: mirsa_genkeys [-hv] [-k keyname] [-s seed]\n" );
 }
 
 /// The main program takes command line input, processes argument flags, picks
