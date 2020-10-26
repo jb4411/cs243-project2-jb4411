@@ -1,17 +1,34 @@
 /// file: mirsa_genkeys.c
-/// description: 
+/// description: a program that generates public and private key files.
 /// @author Jesse Burdick-Pless jb4411
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <getopt.h>
 #include <time.h>
 #include <unistd.h>
 #include "mirsa_lib.h"
 
+/// Output a usage message to stderr, standard error.
+/// Used when the program has incomplete command line input.
+
 void usage() {
 	fprintf( stderr, "usage: mirsa_genkeys [-hv] [-k key] [-s seed]\n" );
 }
+
+/// The main program takes command line input, processes argument flags, picks
+/// two random prime numbers using the time or the optinally provieded seed as 
+/// the seed for rand(). The names of the files is the name of the current user 
+/// or the optionally provided name. mr_make_keys is then called to generate the 
+/// public and prives keys along with their respective files.
+///
+/// @param argc integer value for the number of command line input
+///        values
+/// @param argv array of C string values, the command line arguments
+/// @return 0 to tell the OS that the process ran successfully, OR
+///         return 1 to tell the OS there were not enough command line
+///         input values
+
 
 int main( int argc, char * argv[] ) {
 	int opt;
@@ -81,7 +98,7 @@ int main( int argc, char * argv[] ) {
 	while( fscanf(fp, "%lu", &primes[i]) && i < num_primes ) {
 		i++;
 	}
-	
+	fclose( fp );	
 	
 	if( seed == 0 ) {
 		seed = (unsigned) time(0);
@@ -111,7 +128,7 @@ int main( int argc, char * argv[] ) {
 	if( name == NULL ) {
 		name = getlogin();
 	}
-	mr_make_keys(p, q, name);
-	
 
+	mr_make_keys(p, q, name);
+	exit( EXIT_SUCCESS );	
 }
