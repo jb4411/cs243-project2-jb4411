@@ -7,6 +7,7 @@
 #include <getopt.h>
 #include <time.h>
 #include <unistd.h>
+#include <assert.h>
 #include "mirsa_lib.h"
 
 /// Output a usage message to stderr, standard error.
@@ -92,7 +93,8 @@ int main( int argc, char * argv[] ) {
 	int num_primes = 0;	
 	fscanf(fp, "%d", &num_primes);
 	unsigned long int *primes = malloc(sizeof(unsigned long int) * num_primes);	
-	
+	assert(primes != NULL);
+
 	int i = 0;
 	while( fscanf(fp, "%lu", &primes[i]) && i < num_primes ) {
 		i++;

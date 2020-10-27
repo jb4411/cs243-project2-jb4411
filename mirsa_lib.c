@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <errno.h>
+#include <assert.h>
 
 /// Used to indicate verbose mode.
 
@@ -89,9 +90,11 @@ bool mr_make_keys( uint64_t p, uint64_t q, const char * user ) {
 	key_t pub_key = {e, n};
 
 	char* pvt_name = malloc(strlen(user) + 5);
+	assert(pvt_name != NULL);
 	strcpy(pvt_name, user);
 	strcat(pvt_name, ".pvt");
 	char* pub_name = malloc(strlen(user) + 5);
+	assert(pub_name != NULL);
 	strcpy(pub_name, user);
 	strcat(pub_name, ".pub");
 
@@ -99,9 +102,11 @@ bool mr_make_keys( uint64_t p, uint64_t q, const char * user ) {
 		printf("Writing private key file: '%s'\n", pvt_name);
 	}
 	FILE *pvt;
-	pvt = fopen( pvt_name, "w" );	
+	pvt = fopen( pvt_name, "w" );
+	assert(pvt != NULL);
 	// write private key to file
 	fwrite(&pvt_key, sizeof(key_t), 1, pvt);
+	assert(fwrite != NULL);
 	fclose( pvt );
 
 	if( verbose ) {
@@ -109,8 +114,10 @@ bool mr_make_keys( uint64_t p, uint64_t q, const char * user ) {
 	}
 	FILE *pub;
 	pub = fopen( pub_name, "w" );
+	assert(pub != NULL);
 	// write public key to file
 	fwrite(&pub_key, sizeof(key_t), 1, pub);
+	assert(fwrite != NULL);
 	fclose( pub );
 
 	free(pvt_name);
@@ -138,6 +145,8 @@ key_t * mr_read_keyfile( const char * file_name ) {
 	
 	key_t *key;
 	key = malloc(sizeof(key_t));
+	assert(key != NULL);
+
 	fread(key, sizeof(key_t), 1, fp);
 	if( key == NULL ) {
 		fprintf( stderr, "error: mr_read_keyfile: '%s': %s\n", file_name, strerror(errno) );	
