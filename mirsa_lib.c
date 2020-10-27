@@ -9,9 +9,11 @@
 #include <stdint.h>
 #include <errno.h>
 
+/// Used to indicate verbose mode.
+
 static bool verbose = 0;
 
-/// set a flag to print diagnostic information.
+/// Set a flag to print diagnostic information.
 
 bool mr_verbose( bool value ) {
 	bool old = verbose;

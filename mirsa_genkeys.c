@@ -18,17 +18,15 @@ void usage() {
 }
 
 /// The main program takes command line input, processes argument flags, picks
-/// two random prime numbers using the time or the optinally provieded seed as 
-/// the seed for rand(). The names of the files is the name of the current user 
+/// two random prime numbers using the time or the optionally provided seed as 
+/// the seed for rand(). The names of the files are the name of the current user 
 /// or the optionally provided name. mr_make_keys is then called to generate the 
-/// public and prives keys along with their respective files.
+/// public and private keys along with their respective files.
 ///
-/// @param argc integer value for the number of command line input
-///        values
+/// @param argc integer value for the number of command line input values
 /// @param argv array of C string values, the command line arguments
-/// @return 0 to tell the OS that the process ran successfully, OR
-///         return 1 to tell the OS there were not enough command line
-///         input values
+/// @return 0 to tell the OS that the process ran successfully, OR return 1 to 
+/// tell the OS there were not enough command line input values
 
 
 int main( int argc, char * argv[] ) {
