@@ -18,7 +18,7 @@ void usage() {
 	fprintf( stderr, "usage: mirsa_genkeys [-hv] [-k keyname] [-s seed]\n" );
 }
 
-/// The main program takes command line input, processes argument flags, picks
+/// The main function takes command line input, processes argument flags, picks
 /// two random prime numbers using the time or the optionally provided seed as 
 /// the seed for rand(). The names of the files are the name of the current user 
 /// or the optionally provided name. mr_make_keys is then called to generate the 
