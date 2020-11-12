@@ -37,7 +37,6 @@ void usage() {
 
 int main( int argc, char * argv[] ) {
         if( argc < 2 ) {
-		fprintf( stderr, "error: file error\n" );
 		fprintf( stderr, "error: missing file argument\n" );
 		usage();
 		exit( EXIT_FAILURE );
@@ -152,19 +151,14 @@ int main( int argc, char * argv[] ) {
 			decrypted = mr_decrypt(cipher_text, key);
 			text = mr_decode(decrypted);
 			if( has_plainfile ) {
-				if( fwrite(text, sizeof(char), strlen(text), plain_file) ) {
-					fprintf( stderr, "error: miRSA fwrite failed.\n" );
-					exit( EXIT_FAILURE );
-				}
+				fwrite(text, sizeof(char), strlen(text), plain_file);
 			} else {
 				printf("%s", text);
 			}
 			free(text);
 			text = NULL;
 		}
-		if( !has_plainfile ) {
-			printf("\n");
-		} else {
+		if( has_plainfile) {
 			fclose(plain_file);
 		}
 	} else if( mode == 'w' ) {
@@ -200,11 +194,7 @@ int main( int argc, char * argv[] ) {
 
 				encoded = mr_encode(chunk);
 				cipher_text = mr_encrypt(encoded, key);
-				if(fwrite(&cipher_text, sizeof(uint64_t), 1, cipher_file) < 1) {
-					fprintf( stderr, "error: miRSA fwrite failed.\n" );
-					exit( EXIT_FAILURE );
-				}
-
+				fwrite(&cipher_text, sizeof(uint64_t), 1, cipher_file);
 				i += 4;
 			}
 
