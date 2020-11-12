@@ -116,6 +116,7 @@ int main( int argc, char * argv[] ) {
 		p = primes[rand() % num_primes];
 		q = primes[rand() % num_primes];
 		if(  __builtin_umull_overflow(p, q, &res) ) {
+			fprintf( stderr, "error: pq product overflow result '%lu' (0x%lx)\n", res, res);
 			j++;
 		} else {
 			success = 1;

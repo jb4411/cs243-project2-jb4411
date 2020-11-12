@@ -42,7 +42,9 @@ bool mr_make_keys( uint64_t p, uint64_t q, const char * user ) {
 
 	uint64_t tmp = 0, quotient = 0;
 	uint64_t old_r = e, r = phi;
-	uint64_t old_s = 1, s = 0, old_t = 0, t = 1;
+	uint64_t old_s = 1, s = 0;
+       	long int old_t = 0;
+       	long int t = 1;
 
 	while( e < 9 && !done ) {
 		e++;
@@ -64,10 +66,12 @@ bool mr_make_keys( uint64_t p, uint64_t q, const char * user ) {
 			old_t = tmp;
 		}
 
-		if( old_r == 1 ) {
-			done = 1;
-		}
 		d = phi - abs(old_s);
+		if( old_r == 1 ) {
+			if( !(((e * d) - 1) % phi) ) {
+				done = 1;
+			}
+		}
 
 	}
 	if( verbose) {
@@ -165,48 +169,88 @@ key_t * mr_read_keyfile( const char * file_name ) {
 	return key;
 }
 
+/// Uses pubkey to encrypt the message encoded in p.
+
 uint64_t mr_encrypt( uint64_t p, const key_t * pubkey) {
 	if( p >= pubkey->nonce ) {
 		fprintf( stderr, "error: mr_encrypt: code overflow.\n" );
 		fprintf( stderr, "error: mr_encrypt: limit exceeded by code value: %lu.\n", p );
 		exit( EXIT_FAILURE );
 	}
+	
 	uint64_t e = pubkey->key;
 	uint64_t n = pubkey->nonce;
-	uint64_t C = 1;
+	uint64_t c = 1;
 	uint64_t power = e;
 	uint64_t step = 1;
 	uint64_t num = 1;
+	uint64_t *array;
 
 	// encryption math
 	if( power > 0 ) {
-		if( power % 2 ) {
-			C = p % n;
-			power--;
+		array = calloc(floor(log2(power))+1, sizeof(uint64_t));
+		int i = 1;
+		num = p % n;
+		step = 1;
+		array[0] = num;
+		while( (step * 2) <= power ) {
+			num = (num * num) % n;
+			step *= 2;
+			array[i] = num;
+			i++;
 		}
+
+		uint64_t size = 0;
 		while( power ) {
-			num = 1;
-			step = 1;
-			while( step < power ) {
-				num *= (p*p) % n;
-				num %= n;
-				step *= 2;
-				power -= step;
-			}
-			C *= num;
-			C %= n;
+			size = floor(log2(power));
+			c = (c * array[(int) size]) % n;
+			power -= (uint64_t) pow(2, size);
 		}
+		free(array);
 	}
-	return C;
+	
+	return c;
 }
+
+/// Uses pvtkey to decrypt the ciphertext c.
 
 uint64_t mr_decrypt( uint64_t c, const key_t * pvtkey) { 
 	if( c >= pvtkey->nonce ) {
 		fprintf( stderr, "error: mr_decrypt: cipher overflow.\n" );
 		exit( EXIT_FAILURE );
 	}
-	return 0;
+	
+	uint64_t d = pvtkey->key;
+	uint64_t n = pvtkey->nonce;
+	uint64_t p = 1;
+	uint64_t power = d;
+	uint64_t step = 1;
+	uint64_t num = 1;
+	uint64_t *array;
+
+	array = calloc(floor(log2(power))+1, sizeof(uint64_t));
+	num = c % n;
+	array[0] = num;
+	int i = 1;
+	while( (step * 2) <= power ) {
+		num = (num * num) % n;
+		step *= 2;
+		array[i] = num;
+		i++;
+	}
+	
+	uint64_t size = 0;
+	while( power ) {
+		size = floor(log2(power));
+		p = (p * array[(int) size]) % n;
+		power -= (uint64_t) pow(2, size);
+	}
+	free(array);
+	
+	return p;
 }
+
+/// Converts the string st into an unsigned long code.
 
 uint64_t mr_encode( const char * st) {
 	int len = strlen(st);
@@ -224,14 +268,19 @@ uint64_t mr_encode( const char * st) {
 		exit( EXIT_FAILURE );
 	}
 	int val_ok = 1;
-	char hex[17];
+	char hex[9];
 	char tmp[4];
 	char *rst;
 	int i = 0, j = 0;
 	while(st[i]) {
 		sprintf(tmp, "%x", (int) st[i]);
-		hex[j++] = tmp[0];
-		hex[j++] = tmp[1];
+		if(strtol(tmp, &rst, 16) < strtol("10", &rst, 16)) {
+			hex[j++] = '0';
+                        hex[j++] = tmp[0];
+		} else {
+			hex[j++] = tmp[0];
+			hex[j++] = tmp[1];
+		}
 		i++;
 		if(strtol(tmp, &rst, 16) > strtol("FF", &rst, 16)) {
 			val_ok = 0;
@@ -245,10 +294,11 @@ uint64_t mr_encode( const char * st) {
 			printf("FALSE\n");
 		}
 	}
-	while(j < 17) {
-		hex[j] = '\0';
+	while(j < 9) {
+		hex[j] = '0';
 		j++;
 	}
+	hex[8] = '\0';
 	uint64_t result = strtol(hex, &rst, 16);
 	if(!val_ok) {
 		fprintf( stderr, "error: mr_encode: could not convert '%s'.\n", st);
@@ -261,12 +311,22 @@ uint64_t mr_encode( const char * st) {
 	return result;
 }
 
+/// Converts an unsigned code into a string.
+
 char * mr_decode( uint64_t code) {
 	double bits = 0;
 	bits = log2(code); 
 	bits = ceil(bits);
 	bits = bits/8;
 	int size = ceil(bits);
+
+	if( size > 4) {
+		fprintf( stderr, "error: mr_decode: size overflow on '%lu'.\n", code );
+		exit( EXIT_FAILURE );
+	} else if( size < 0 ) {
+		fprintf( stderr, "error: uncomputable array length: %lu.\n", code );
+		exit( EXIT_FAILURE );
+	}
 
 	char *str = calloc(size + 1, sizeof(char));
 	assert(str != NULL);
@@ -277,7 +337,6 @@ char * mr_decode( uint64_t code) {
 		str[i] = (char) ((code >> (8 * i)) & bitmask);
 		i++;
 	}
-
 	char *result = calloc(size + 1, sizeof(char));
 	assert(result != NULL);
 	int j = 0, k = size-1;
