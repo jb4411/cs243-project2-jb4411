@@ -109,6 +109,7 @@ int main( int argc, char * argv[] ) {
 	} 
 	char *keyfile = NULL;
 	keyfile = malloc(strlen(keyname) + 5);
+	assert(keyfile != NULL);
 	strncat(keyfile, keyname, strlen(keyname));
 	strncat(keyfile, ext, 5);
 	key = mr_read_keyfile(keyfile);
@@ -182,8 +183,10 @@ int main( int argc, char * argv[] ) {
 		uint64_t encoded = 0;
 		uint64_t cipher_text = 0;
 		text = calloc(1024, sizeof(char));
+		assert(text != NULL);
 		size_t bytes_read = 0;
 		char *chunk = calloc(5, sizeof(char));
+		assert(chunk != NULL);
 		while( (bytes_read = fread(text, sizeof(char), 1024, plain_text)) ) {
 			size_t i = 0;
 			while( i < bytes_read ) {
