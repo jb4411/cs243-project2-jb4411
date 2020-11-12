@@ -1,5 +1,8 @@
 /// file: mirsa_lib.c
-/// description: TODO
+/// description: The mirsa_rw program reads from, or writes to, a cipherfile 
+/// stream (i.e. a binary file). The program processes a plaintext stream. For 
+/// encryption, it reads from a file or standard input; for decryption, it 
+/// writes to a file or standard output.
 /// @author Jesse Burdick-Pless jb4411
 
 #include <stdlib.h>
@@ -22,11 +25,11 @@ void usage() {
 	fprintf( stderr, "The -v flag turns on verbose output.\n" );
 }
 
-/// The main function takes command line input, processes argument flags. If 
+/// The main function takes command line input, and processes argument flags. If 
 /// '-w' is given, the program will read from a plaintext input file (if one is
-/// given) or from standard in, the plaintext is the encode, encrypted, the 
-/// resulting ciphertext is then written to a file. If '-r' is given, the 
-/// program will read from a ciphertext file, decrypt it, decode it, the 
+/// given) or from standard in. The plaintext is then encoded and encrypted. 
+/// The resulting ciphertext is then written to a file. If '-r' is given, the 
+/// program will read from a ciphertext file, decrypt it and decode it. The 
 /// resulting plaintext is then written to a plaintext file (if one is given)
 /// or printed to standard out.
 ///
@@ -36,7 +39,7 @@ void usage() {
 /// tell the OS there were not enough command line input values
 
 int main( int argc, char * argv[] ) {
-        if( argc < 2 ) {
+	if( argc < 2 ) {
 		fprintf( stderr, "error: missing file argument\n" );
 		usage();
 		exit( EXIT_FAILURE );
@@ -45,8 +48,8 @@ int main( int argc, char * argv[] ) {
 	int opt;
 	char mode = '\0';
 	char *keyname = NULL;
-        while ( (opt = getopt( argc, argv, "hvk:xr:zw:a") ) != -1 ) {
-                switch( opt ) {
+	while ( (opt = getopt( argc, argv, "hvk:xr:zw:a") ) != -1 ) {
+		switch( opt ) {
 			case 'h':
 				fprintf( stderr, "\n" );
 				usage();
@@ -78,11 +81,11 @@ int main( int argc, char * argv[] ) {
 			case 'w':
 				mode = 'w';
 				if( optarg == NULL ) {
-                                        fprintf( stderr, "error: file error\n" );
-                                        fprintf( stderr, "error: missing cipherfile\n" );
-                                        usage();
-                                        exit( EXIT_FAILURE );
-                                }
+					fprintf( stderr, "error: file error\n" );
+					fprintf( stderr, "error: missing cipherfile\n" );
+					usage();
+					exit( EXIT_FAILURE );
+				}
 				cipher_name = optarg;
 				break;
 			case '?':
@@ -102,7 +105,7 @@ int main( int argc, char * argv[] ) {
 	} else {
 		ext = ".pvt";
 	}
-	
+
 	if( keyname == NULL ) {
 		keyname = getlogin();
 	} 

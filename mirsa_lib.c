@@ -43,8 +43,8 @@ bool mr_make_keys( uint64_t p, uint64_t q, const char * user ) {
 	uint64_t tmp = 0, quotient = 0;
 	uint64_t old_r = e, r = phi;
 	uint64_t old_s = 1, s = 0;
-       	long int old_t = 0;
-       	long int t = 1;
+	long int old_t = 0;
+	long int t = 1;
 
 	while( e < 9 && !done ) {
 		e++;
@@ -147,7 +147,7 @@ key_t * mr_read_keyfile( const char * file_name ) {
 		fprintf( stderr, "error: mr_read_keyfile: invalid file: '%s'\n", file_name );
 		exit( EXIT_FAILURE );
 	}
-	
+
 	key_t *key;
 	key = malloc(sizeof(key_t));
 	assert(key != NULL);
@@ -173,15 +173,15 @@ key_t * mr_read_keyfile( const char * file_name ) {
 
 uint64_t mr_encrypt( uint64_t p, const key_t * pubkey) {
 	if( verbose ) {
-                printf("Encoded text = %lu\n", p);
-        }
+		printf("Encoded text = %lu\n", p);
+	}
 
 	if( p >= pubkey->nonce ) {
 		fprintf( stderr, "error: mr_encrypt: code overflow.\n" );
 		fprintf( stderr, "error: mr_encrypt: limit exceeded by code value: %lu.\n", p );
 		exit( EXIT_FAILURE );
 	}
-	
+
 	uint64_t e = pubkey->key;
 	uint64_t n = pubkey->nonce;
 	uint64_t c = 1;
@@ -213,7 +213,7 @@ uint64_t mr_encrypt( uint64_t p, const key_t * pubkey) {
 		}
 		free(array);
 	}
-	
+
 	if( verbose ) {
 		printf("Cipher text = %lu\n", c);
 	}
@@ -252,14 +252,14 @@ uint64_t mr_decrypt( uint64_t c, const key_t * pvtkey) {
 		array[i] = num;
 		i++;
 	}
-	
+
 	uint64_t size = 0;
 	while( power ) {
 		size = floor(log2(power));
 		p = (p * array[(int) size]) % n;
 		power -= (uint64_t) pow(2, size);
 	}
-		
+
 	if( verbose ) {
 		printf("Decrypted code = %lu\n", p);
 	}
@@ -294,7 +294,7 @@ uint64_t mr_encode( const char * st) {
 		sprintf(tmp, "%x", (int) st[i]);
 		if(strtol(tmp, &rst, 16) < strtol("10", &rst, 16)) {
 			hex[j++] = '0';
-                        hex[j++] = tmp[0];
+			hex[j++] = tmp[0];
 		} else {
 			hex[j++] = tmp[0];
 			hex[j++] = tmp[1];
@@ -337,7 +337,7 @@ char * mr_decode( uint64_t code) {
 	bits = ceil(bits);
 	bits = bits/8;
 	int size = ceil(bits);
-	
+
 	if( verbose ) {
 		printf("Message size (bytes): %d\n", size);
 	}
