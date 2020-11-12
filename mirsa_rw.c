@@ -105,21 +105,16 @@ int main( int argc, char * argv[] ) {
 	}
 	
 	if( keyname == NULL ) {
-		char *username = getlogin();
-		username = (char *) realloc(username, (strlen(username) + 5));
-		strncat(username, ext, 5);
-		key = mr_read_keyfile(username);
-		free(username);
-		username = NULL;
-	} else {
-		char *keyfile;
-		keyfile = malloc(strlen(keyname) + 5);
-		strncat(keyfile, keyname, strlen(keyname));
-		strncat(keyfile, ext, 5);
-		key = mr_read_keyfile(keyfile);
-		free(keyfile);
-		keyname = NULL;
-	}
+		keyname = getlogin();
+	} 
+	char *keyfile = NULL;
+	keyfile = malloc(strlen(keyname) + 5);
+	strncat(keyfile, keyname, strlen(keyname));
+	strncat(keyfile, ext, 5);
+	key = mr_read_keyfile(keyfile);
+	free(keyfile);
+	keyname = NULL;
+
 
 	FILE *cipher_file;
 	FILE *plain_file;
@@ -163,6 +158,8 @@ int main( int argc, char * argv[] ) {
 			} else {
 				printf("%s", text);
 			}
+			free(text);
+			text = NULL;
 		}
 		if( !has_plainfile ) {
 			printf("\n");
@@ -197,7 +194,7 @@ int main( int argc, char * argv[] ) {
 					strncpy(chunk, &(text[i]), (bytes_read - i));
 					chunk[bytes_read - i] = '\0';
 				}
-				
+
 				encoded = mr_encode(chunk);
 				cipher_text = mr_encrypt(encoded, key);
 				if(fwrite(&cipher_text, sizeof(uint64_t), 1, cipher_file) < 1) {

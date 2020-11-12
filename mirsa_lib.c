@@ -172,6 +172,10 @@ key_t * mr_read_keyfile( const char * file_name ) {
 /// Uses pubkey to encrypt the message encoded in p.
 
 uint64_t mr_encrypt( uint64_t p, const key_t * pubkey) {
+	if( verbose ) {
+                printf("Encoded text = %lu\n", p);
+        }
+
 	if( p >= pubkey->nonce ) {
 		fprintf( stderr, "error: mr_encrypt: code overflow.\n" );
 		fprintf( stderr, "error: mr_encrypt: limit exceeded by code value: %lu.\n", p );
@@ -189,6 +193,7 @@ uint64_t mr_encrypt( uint64_t p, const key_t * pubkey) {
 	// encryption math
 	if( power > 0 ) {
 		array = calloc(floor(log2(power))+1, sizeof(uint64_t));
+		assert(array != NULL);
 		int i = 1;
 		num = p % n;
 		step = 1;
@@ -209,17 +214,25 @@ uint64_t mr_encrypt( uint64_t p, const key_t * pubkey) {
 		free(array);
 	}
 	
+	if( verbose ) {
+		printf("Cipher text = %lu\n", c);
+	}
+
 	return c;
 }
 
 /// Uses pvtkey to decrypt the ciphertext c.
 
 uint64_t mr_decrypt( uint64_t c, const key_t * pvtkey) { 
+	if( verbose ) {
+		printf("Cipher text = %lu\n", c);
+	}
+
 	if( c >= pvtkey->nonce ) {
 		fprintf( stderr, "error: mr_decrypt: cipher overflow.\n" );
 		exit( EXIT_FAILURE );
 	}
-	
+
 	uint64_t d = pvtkey->key;
 	uint64_t n = pvtkey->nonce;
 	uint64_t p = 1;
@@ -229,6 +242,7 @@ uint64_t mr_decrypt( uint64_t c, const key_t * pvtkey) {
 	uint64_t *array;
 
 	array = calloc(floor(log2(power))+1, sizeof(uint64_t));
+	assert(array != NULL);
 	num = c % n;
 	array[0] = num;
 	int i = 1;
@@ -245,8 +259,12 @@ uint64_t mr_decrypt( uint64_t c, const key_t * pvtkey) {
 		p = (p * array[(int) size]) % n;
 		power -= (uint64_t) pow(2, size);
 	}
-	free(array);
-	
+		
+	if( verbose ) {
+		printf("Decrypted code = %lu\n", p);
+	}
+
+	free(array);	
 	return p;
 }
 
@@ -319,6 +337,10 @@ char * mr_decode( uint64_t code) {
 	bits = ceil(bits);
 	bits = bits/8;
 	int size = ceil(bits);
+	
+	if( verbose ) {
+		printf("Message size (bytes): %d\n", size);
+	}
 
 	if( size > 4) {
 		fprintf( stderr, "error: mr_decode: size overflow on '%lu'.\n", code );
@@ -337,11 +359,20 @@ char * mr_decode( uint64_t code) {
 		str[i] = (char) ((code >> (8 * i)) & bitmask);
 		i++;
 	}
+
+	if( verbose ) {
+		printf("Reversed string: %s\n", str);
+	}
+
 	char *result = calloc(size + 1, sizeof(char));
 	assert(result != NULL);
 	int j = 0, k = size-1;
 	while( j < size ) {
 		result[k--] = str[j++];
+	}
+
+	if( verbose ) {
+		printf("Result string: %s\n", result);
 	}
 	free(str);
 	return result;
