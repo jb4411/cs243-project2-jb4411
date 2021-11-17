@@ -1,0 +1,101 @@
+commit c5a92822405a39c1325041bbc54ae1932568dc89
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Thu Nov 12 18:20:48 2020 -0500
+
+    Fixed documentation in mirsa_lib.c and mirsa_rw.c.
+
+commit edfeb568b17403da8c8342c272c3465dee1e9c37
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Thu Nov 12 18:09:39 2020 -0500
+
+    Fixed the output of mirsa_rw.c.
+
+commit ebd45c65cdf0a63c8215e6b73d0a62df831ea9aa
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Thu Nov 12 18:05:05 2020 -0500
+
+    Added assert staements to mirsa_rw.c.
+
+commit f48516f6cdf254604cd63edec840833ad5f5bfec
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Thu Nov 12 18:02:17 2020 -0500
+
+    Added verbose output and assert statments to mirsa_lib.c
+
+commit fabf47de6b6283b2965939193022fa5705fdecc5
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Thu Nov 12 17:38:51 2020 -0500
+
+    Added documentation to mirsa_rw.c and mirsa_lib.c. Fixed bugs in mirsa_rw.c.
+
+commit ed3f235645192dba9105c360bee1047fca986399
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Tue Nov 10 12:50:20 2020 -0500
+
+    Programmed mr_encode, mr_decode, and bagn work on mr_encrypt.
+
+commit a112317cc1b471fbd8b8b93a98f54b85bb7a013b
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Tue Nov 10 12:48:45 2020 -0500
+
+    programmed most of mirsa_rw.c.
+
+commit 0d4342649b97b8972ca875872a8131d3e4538cd5
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Tue Oct 27 14:18:42 2020 -0400
+
+    Added assert statments to mirsa_lib.c and mirsa_genkeys.c.
+
+commit 829bffca5d2299b3c45d0f68cb1ef1b2a5b59cf3
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Mon Oct 26 20:29:50 2020 -0400
+
+    Fixed documentation.
+
+commit 515a883ab0d88d6804a467bbf7cc7a4979be068e
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Mon Oct 26 15:38:02 2020 -0400
+
+    Fixed formatting in mirsa_genkeys usage statement.
+
+commit ab38f163b0706fa4bff9d6569eba5927b5433f6c
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Mon Oct 26 15:33:40 2020 -0400
+
+    Removed function calls used for testing.
+
+commit 5544b2ac376f5af30a9d5313d90c6cd5d66bb798
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Mon Oct 26 15:29:48 2020 -0400
+
+    Added missing error messages to mirsa_genkeys.c and mirsa_lib.c.
+
+commit 0a922fe9359e91de9af9f305f5845c2fb7d78710
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Mon Oct 26 14:44:26 2020 -0400
+
+    Added mr_verbose to mirsa_lib.c and added verbose output to mr_make_keys and mr_read_keyfile in mirsa_lib.c.
+
+commit de43ef6a47a41d43e78b1861ebe33f3e501880b2
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Mon Oct 26 13:31:52 2020 -0400
+
+    Added mr_read_keyfile and added documentation to mirsa_lib.c and mirsa_genkaeys.c.
+
+commit 214bba85c524f98a74e351ae670ae59347379455
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Sat Oct 24 17:55:32 2020 -0400
+
+    Implemented multiplicative inverse algorthim, and changed p and q to be selected randomly.
+
+commit 159558dabd1c3816cf720b861eae964060db2b4d
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Sat Oct 24 15:50:40 2020 -0400
+
+    Programmed mr_make_keys.
+
+commit 55929fd7aba4748e1cb589ea6f4e6e75f1e3490f
+Author: Jesse  Burdick-Pless <jb4411@cs.rit.edu>
+Date:   Thu Oct 8 18:19:48 2020 -0400
+
+    initial provisioning

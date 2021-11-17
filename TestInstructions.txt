@@ -1,0 +1,54 @@
+
+# Key Test Instruction Steps
+
+The following steps will let you build the test_keys program executable.
+This program will link your mirsa_lib.o with a test_keys.o main program.
+The test_keys program runs 5 tests that generate and then read key files.
+
+##                                get new items; Need to Do This Only Once
+get csci243 project2 test_keys.o header-test.mak TestInstructions.txt
+	-OR-
+get csci243 project2  # and check that it does not overwrite files you changed
+
+##                                make realclean to clean the folder
+make realclean
+
+##                                to link test_keys.o with mirsa_lib.o
+gmakemake -header header-test.mak >Makefile
+
+##                                make to rebuild all programs
+make
+
+##                                test_keys runs 5 tests
+./test_keys
+
+Run test_keys with the -s option to get repeatable results.
+For example here is a ./test_keys -s 11 execution output:
+$ test_keys -s 11
+
+test 1 of 5:
+p, q: 0x0000d211,	0x0000d50d
+private key pair:	0x18f94ef7,	0xaed2cfdd
+public key pair:	0x00000007,	0xaed2cfdd
+
+test 2 of 5:
+p, q: 0x0000d523,	0x0000d2f1
+private key pair:	0x96872c77,	0xaf9f5bf3
+public key pair:	0x00000007,	0xaf9f5bf3
+
+test 3 of 5:
+p, q: 0x0000d157,	0x0000d513
+private key pair:	0x31c7cadf,	0xae3cec75
+public key pair:	0x00000007,	0xae3cec75
+
+test 4 of 5:
+p, q: 0x0000d493,	0x0000d4e3
+private key pair:	0x235a8361,	0xb0c63a59
+public key pair:	0x00000005,	0xb0c63a59
+
+test 5 of 5:
+p, q: 0x0000d211,	0x0000d12d
+private key pair:	0x726cc72b,	0xaba4cdfd
+public key pair:	0x00000003,	0xaba4cdfd
+
+
